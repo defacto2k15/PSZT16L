@@ -1,4 +1,4 @@
-package Model;
+package Model.LineralFunctions;
 
 // innymi słowy odcinek
 public class LinePart {

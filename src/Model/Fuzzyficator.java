@@ -1,10 +1,20 @@
 package Model;
 
+import java.util.List;
+
+import Model.FuzzySets.InputFuzzySet;
+import Model.LineralFunctions.Diagram;
+
 public class Fuzzyficator {
 
-	public FuzzyInput fuzyficate(CrispValuesDatabase crispValuesDatabase) {
+	public Diagram getDiagramForAttribute(LinguisticAttributes attribute) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	// TODO
+
+	public List<InputFuzzySet> getFuzzySets() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

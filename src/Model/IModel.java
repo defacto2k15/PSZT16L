@@ -1,19 +1,29 @@
 package Model;
 
+import java.util.List;
+
+import Model.FuzzySets.InputFuzzySet;
+import Model.FuzzySets.TipFuzzySet;
+import Model.LineralFunctions.Diagram;
+import Model.Rules.Rule;
+
 public interface IModel {
 	// CrispInput to jest ta wartość bezwzględna atrybutu
 	void setCrispInputs(CrispValue crispCharm, CrispValue crispFoodQuality, CrispValue crispServiceQuality);
-	CrispValue getCrispValue( LiteralAttributes attribute);
-	
 	void generateCrispValuesUsingGaussianDistribution( CrispValue expectedValue /*wartosc oczekiwana*/, float standardDeviation);
 	void generateCrispValuesUsingUniformDistribution( CrispValue min, CrispValue max);
 	
-	void setFuzzyficationFunction();
+	Diagram getFuzzyficationDiagramForAttribute( LinguisticAttributes attribute );
 	
+	List<InputFuzzySet> getInputFuzzySets();
+	
+	List<Rule> getRules();
 	
 	void setDefuzzyficationMethod( DefuzzyficationMethod method);
+	Diagram getDefuzyficationDiagram();
 	
-	void calculate(); // przelicza napiwek
 	TipPercentage getTipPercent();
+	
+	void regenerate();
 	
 }

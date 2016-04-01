@@ -1,4 +1,4 @@
-package Model;
+package Model.LineralFunctions;
 
 public class Domain {
 	private float max;

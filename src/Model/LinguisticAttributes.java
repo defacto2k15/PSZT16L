@@ -1,6 +1,6 @@
 package Model;
 
-public enum LiteralAttributes {
+public enum LinguisticAttributes {
 	Charm,
 	FoodQuality,
 	ServiceQuality
