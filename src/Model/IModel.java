@@ -13,6 +13,10 @@ public interface IModel {
 	void generateCrispValuesUsingGaussianDistribution( CrispValue expectedValue /*wartosc oczekiwana*/, float standardDeviation);
 	void generateCrispValuesUsingUniformDistribution( CrispValue min, CrispValue max);
 	
+	CrispValue getCharmCrispValue();
+	CrispValue getFoodQualityCrispValue();
+	CrispValue getServiceQualityCrispValue();
+	
 	Diagram getFuzzyficationDiagramForAttribute( LinguisticAttributes attribute );
 	
 	List<InputFuzzySet> getInputFuzzySets();

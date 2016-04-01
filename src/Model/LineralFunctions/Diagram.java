@@ -3,12 +3,12 @@ package Model.LineralFunctions;
 import java.util.List;
 
 public class Diagram {
-	private List<LineralFunction> lineralFunctions;
-	private List<LineralFunction> markedLineralFunctions;
+	private List<Function> lineralFunctions;
+	private List<Function> markedLineralFunctions;
 	private List<HorizontalLines> horizontalLines;
 	private List<VerticalLines> verticalLines;
 	
-	public Diagram(List<LineralFunction> lineralFunctions,	List<LineralFunction> markedLineralFunctions, 
+	public Diagram(List<Function> lineralFunctions,	List<Function> markedLineralFunctions, 
 				List<HorizontalLines> horizontalLines, List<VerticalLines> verticalLines) {
 		super();
 		this.lineralFunctions = lineralFunctions;
@@ -17,14 +17,14 @@ public class Diagram {
 		this.verticalLines = verticalLines;
 	}
 	
-	public List<LineralFunction> getLineralFunctions() {
+	public List<Function> getLineralFunctions() {
 		return lineralFunctions;
 	}
 	public List<HorizontalLines> getHorizontalLines() {
 		return horizontalLines;
 	}
 
-	public List<LineralFunction> getMarkedLineralFunctions() {
+	public List<Function> getMarkedLineralFunctions() {
 		return markedLineralFunctions;
 	}
 

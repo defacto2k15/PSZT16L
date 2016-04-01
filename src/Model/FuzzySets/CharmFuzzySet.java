@@ -2,11 +2,11 @@ package Model.FuzzySets;
 
 import Model.CrispValuesDatabase;
 import Model.LinguisticAttributes;
-import Model.LineralFunctions.LineralFunction;
+import Model.LineralFunctions.Function;
 
 public class CharmFuzzySet extends InputFuzzySet {
 
-	public CharmFuzzySet(LineralFunction function,	CharmLinguisticValue linguisticValue) {
+	public CharmFuzzySet(Function function,	CharmLinguisticValue linguisticValue) {
 		super(function, LinguisticAttributes.Charm, linguisticValue);
 	}
 

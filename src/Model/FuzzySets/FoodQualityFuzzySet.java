@@ -2,10 +2,10 @@ package Model.FuzzySets;
 
 import Model.CrispValuesDatabase;
 import Model.LinguisticAttributes;
-import Model.LineralFunctions.LineralFunction;
+import Model.LineralFunctions.Function;
 
 public class FoodQualityFuzzySet extends InputFuzzySet{
-	public FoodQualityFuzzySet(LineralFunction function, FoodQualityLinguisticValues linguisticValue) {
+	public FoodQualityFuzzySet(Function function, FoodQualityLinguisticValues linguisticValue) {
 		super(function, LinguisticAttributes.FoodQuality, linguisticValue);
 	}
 }

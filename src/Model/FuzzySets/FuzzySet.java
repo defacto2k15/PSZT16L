@@ -1,16 +1,16 @@
 package Model.FuzzySets;
 
 import Model.CrispValuesDatabase;
-import Model.LineralFunctions.LineralFunction;
+import Model.LineralFunctions.Function;
 
 public abstract class FuzzySet {
-	private LineralFunction function;
+	private Function function;
 	
-	protected FuzzySet( LineralFunction function){
+	protected FuzzySet( Function function){
 		this.function = function;
 	}
 
-	public LineralFunction getFunction(){
+	public Function getFunction(){
 		return function;
 	}
 

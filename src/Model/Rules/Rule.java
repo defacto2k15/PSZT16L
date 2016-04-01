@@ -12,7 +12,7 @@ import Model.FuzzySets.TipFuzzySet;
 import Model.FuzzySets.TipLinguisticValues;
 import Model.LineralFunctions.Diagram;
 import Model.LineralFunctions.FunctionInterferencer;
-import Model.LineralFunctions.LineralFunction;
+import Model.LineralFunctions.Function;
 
 public class Rule {
 	private InputFuzzySet leftSet;

@@ -75,5 +75,26 @@ public class Model implements IModel{
 	}
 
 
+	@Override
+	public CrispValue getCharmCrispValue() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public CrispValue getFoodQualityCrispValue() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public CrispValue getServiceQualityCrispValue() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }

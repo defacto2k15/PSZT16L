@@ -2,11 +2,11 @@ package Model.LineralFunctions;
 
 import java.util.List;
 
-public class LineralFunction {
+public class Function {
 	private List<LinePart> lineParts;
 	private String functionName;
 	
-	public LineralFunction(List<LinePart> lineParts, String functionName) {
+	public Function(List<LinePart> lineParts, String functionName) {
 		super();
 		this.lineParts = lineParts;
 		this.functionName = functionName;
