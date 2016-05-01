@@ -9,11 +9,11 @@ import Model.LineralFunctions.Diagram;
 import Model.Rules.Rule;
 
 public class Model implements IModel{
-	private FuzzyRuleBase fuzzyRuleBase;
-	private Fuzzyficator fuzzyficator;
-	private Defuzzyficator defuzzyficator;
+	private FuzzyRuleBase fuzzyRuleBase = new FuzzyRuleBase();
+	private Fuzzyficator fuzzyficator = new Fuzzyficator();
+	private Defuzzyficator defuzzyficator = new Defuzzyficator();
 	
-	private CrispValuesDatabase crispValuesDatabase;
+	private CrispValuesDatabase crispValuesDatabase = new CrispValuesDatabase();
 
 	
 	@Override
@@ -77,7 +77,7 @@ public class Model implements IModel{
 
 	@Override
 	public CrispValue getCharmCrispValue() {
-		// TODO Auto-generated method stub
+		//return crispValuesDatabase.getValueFor(LinguisticAttributes.Charm, linguisticValue)
 		return null;
 	}
 

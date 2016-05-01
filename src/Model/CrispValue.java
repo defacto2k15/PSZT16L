@@ -15,4 +15,13 @@ public class CrispValue {
 		return value;
 	}
 	
+	@Override
+	public boolean equals ( Object other ){
+		if( other.getClass() != this.getClass()){
+			return false;
+		}
+		
+		return getValue() == ((CrispValue)other).getValue();
+	}
+	
 }
