@@ -2,19 +2,27 @@ package Model;
 import java.util.List;
 
 import Model.CrispValues.ConstantCrispValuesProvider;
+import Model.CrispValues.CrispValue;
+import Model.CrispValues.CrispValuesDatabase;
 import Model.CrispValues.crispValuesGenerator.GaussianDistributionGenerator;
 import Model.CrispValues.crispValuesGenerator.UniformDistributionGenerator;
 import Model.FuzzySets.InputFuzzySet;
+import Model.FuzzySets.MembershipFunctionsDatabase;
 import Model.LineralFunctions.Diagram;
+import Model.LineralFunctions.FunctionInterferencer;
+import Model.Rules.FuzzyRuleBase;
 import Model.Rules.Rule;
 
 public class Model implements IModel{
-	private FuzzyRuleBase fuzzyRuleBase = new FuzzyRuleBase();
-	private Fuzzyficator fuzzyficator = new Fuzzyficator();
-	private Defuzzyficator defuzzyficator = new Defuzzyficator();
-	
+	private MembershipFunctionsDatabase membershipFunctionsDatabase = new MembershipFunctionsDatabase();
 	private CrispValuesDatabase crispValuesDatabase = new CrispValuesDatabase();
-
+	private Fuzzyficator fuzzyficator = new Fuzzyficator(membershipFunctionsDatabase);
+	private FunctionInterferencer interferencer = new FunctionInterferencer();
+	private FuzzyRuleBase fuzzyRuleBase = new FuzzyRuleBase(fuzzyficator, crispValuesDatabase, interferencer);
+	private Defuzzyficator defuzzyficator = new Defuzzyficator( fuzzyRuleBase, interferencer );
+	
+	public Model() throws Exception{
+	}
 	
 	@Override
 	public void setCrispInputs(CrispValue crispCharm, CrispValue crispFoodQuality, CrispValue crispServiceQuality) {
@@ -35,11 +43,11 @@ public class Model implements IModel{
 
 	@Override
 	public void setDefuzzyficationMethod(DefuzzyficationMethod method) {
-		// TODO
+		// TODO Doesnt work yet...
 	}
 
 	@Override
-	public TipPercentage getTipPercent() {
+	public TipPercentage getTipPercent() throws Exception {
 		return defuzzyficator.defuzzyficate();
 	}
 
@@ -52,7 +60,7 @@ public class Model implements IModel{
 
 	@Override
 	public List<InputFuzzySet> getInputFuzzySets() {
-		return fuzzyficator.getFuzzySets();
+		return fuzzyficator.getInputFuzzySets();
 	}
 
 
@@ -61,12 +69,10 @@ public class Model implements IModel{
 		return fuzzyRuleBase.getAsList();
 	}
 
-
 	@Override
 	public Diagram getDefuzyficationDiagram() {
 		return defuzzyficator.getDefuzzyficationDiagram();
 	}
-
 
 	@Override
 	public void regenerate() {
@@ -74,27 +80,21 @@ public class Model implements IModel{
 		fuzzyRuleBase.regenerateRules();
 	}
 
-
 	@Override
 	public CrispValue getCharmCrispValue() {
-		//return crispValuesDatabase.getValueFor(LinguisticAttributes.Charm, linguisticValue)
-		return null;
+		return crispValuesDatabase.getValueFor(LinguisticAttributes.Charm);
 	}
 
 
 	@Override
 	public CrispValue getFoodQualityCrispValue() {
-		// TODO Auto-generated method stub
-		return null;
+		return crispValuesDatabase.getValueFor(LinguisticAttributes.FoodQuality);
 	}
 
 
 	@Override
 	public CrispValue getServiceQualityCrispValue() {
-		// TODO Auto-generated method stub
-		return null;
+		return crispValuesDatabase.getValueFor(LinguisticAttributes.ServiceQuality);
 	}
-
-
 
 }

@@ -1,4 +1,6 @@
-package Model;
+package Model.CrispValues;
+
+import Model.ConstantValues;
 
 public class CrispValue {
 	private float value;

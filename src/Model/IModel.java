@@ -2,6 +2,7 @@ package Model;
 
 import java.util.List;
 
+import Model.CrispValues.CrispValue;
 import Model.FuzzySets.InputFuzzySet;
 import Model.FuzzySets.TipFuzzySet;
 import Model.LineralFunctions.Diagram;
@@ -26,7 +27,7 @@ public interface IModel {
 	void setDefuzzyficationMethod( DefuzzyficationMethod method);
 	Diagram getDefuzyficationDiagram();
 	
-	TipPercentage getTipPercent();
+	TipPercentage getTipPercent() throws Exception;
 	
 	void regenerate();
 	

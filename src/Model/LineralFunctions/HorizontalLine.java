@@ -1,10 +1,10 @@
 package Model.LineralFunctions;
 
-public class HorizontalLines {
+public class HorizontalLine {
 	private float yPos;
 	private String lineDescription;
 	
-	public HorizontalLines(float xPos, String lineDescription) {
+	public HorizontalLine(float yPos, String lineDescription) {
 		super();
 		this.yPos = yPos;
 		this.lineDescription = lineDescription;

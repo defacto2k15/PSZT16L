@@ -2,7 +2,6 @@ package Model.CrispValues;
 
 import java.util.HashMap;
 
-import Model.CrispValue;
 import Model.LinguisticAttributes;
 
 public class ConstantCrispValuesProvider implements ICrispValuesProvider {

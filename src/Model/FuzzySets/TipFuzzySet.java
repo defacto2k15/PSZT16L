@@ -1,6 +1,6 @@
 package Model.FuzzySets;
 
-import Model.CrispValuesDatabase;
+import Model.CrispValues.CrispValuesDatabase;
 import Model.LineralFunctions.Function;
 
 public class TipFuzzySet extends FuzzySet {

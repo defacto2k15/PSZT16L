@@ -4,7 +4,7 @@ public class Domain {
 	private float max;
 	private float min;
 	
-	public Domain(float max, float min) throws Exception {
+	public Domain(float min, float max) throws Exception {
 		super();
 		if( max< min){
 			throw new Exception("max must be bigger than min in domain");
@@ -19,6 +19,14 @@ public class Domain {
 
 	public float getMin() {
 		return min;
+	}
+	
+	public boolean isIn( float x ){
+		return x >= getMin() && x <= getMax();
+	}
+	
+	public boolean isPoint(){
+		return getMin() == getMax();
 	}
 	
 	

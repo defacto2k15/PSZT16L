@@ -1,10 +1,10 @@
 package Model.FuzzySets;
 
-import Model.CrispValuesDatabase;
 import Model.LinguisticAttributes;
+import Model.CrispValues.CrispValuesDatabase;
 import Model.LineralFunctions.Function;
 
-public abstract class InputFuzzySet extends FuzzySet{
+public class InputFuzzySet extends FuzzySet{
 	private LinguisticAttributes linguisticAttribute;
 	private ILinguisticValue linguisticValue;
 	
@@ -23,7 +23,7 @@ public abstract class InputFuzzySet extends FuzzySet{
 	}
 	
 	public float getDegree(CrispValuesDatabase crispValuesDatabase ){
-		return getFunction().getValueAt( crispValuesDatabase.getValueFor(linguisticAttribute, linguisticValue));
+		return getFunction().getValueAt( crispValuesDatabase.getValueFor(linguisticAttribute).getValue());
 	}
 	
 }

@@ -1,21 +1,30 @@
 package Model.CrispValues.crispValuesGenerator;
 
-import Model.CrispValue;
-import Model.CrispValuesDatabase;
+import java.util.Random;
+
 import Model.LinguisticAttributes;
+import Model.CrispValues.CrispValue;
+import Model.CrispValues.CrispValuesDatabase;
 import Model.CrispValues.ICrispValuesProvider;
 
 public class UniformDistributionGenerator implements ICrispValuesProvider {
-
+	Random random = new Random();
+	private CrispValue min;
+	private CrispValue max;
 
 	public UniformDistributionGenerator(CrispValue min, CrispValue max) {
-		// TODO Auto-generated constructor stub
+		this.min = min;
+		this.max = max;
 	}
 
 	@Override
 	public CrispValue getValueForAttribute(LinguisticAttributes attribute) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return new CrispValue( (float) ((random.nextDouble() * ( max.getValue() - min.getValue())) + max.getValue()));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 

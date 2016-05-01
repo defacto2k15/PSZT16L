@@ -1,10 +1,10 @@
 package Model.LineralFunctions;
 
-public class VerticalLines {
+public class VerticalLine {
 	private float xPos;
 	private String lineDescription;
 	
-	public VerticalLines(float xPos, String lineDescription) {
+	public VerticalLine(float xPos, String lineDescription) {
 		super();
 		this.xPos = xPos;
 		this.lineDescription = lineDescription;

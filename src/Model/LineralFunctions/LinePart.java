@@ -23,5 +23,29 @@ public class LinePart {
 	public Domain getDomain() {
 		return domain;
 	}
+
+	public float getValueAt(float x) {
+		return getSlope() * x + getExtent();
+	}
+
+	public boolean isLine() {
+		return getSlope() == 0;
+	}
+	
+	public boolean isPoint(){
+		return domain.isPoint();
+	}
+
+	public LinePart getSubLine(Float min, Float max) throws Exception {
+		return new LinePart( slope, extent, new Domain(min, max));
+	}
+
+	public float getMax() {
+		if( getSlope() > 0){
+			return getValueAt(getDomain().getMax());
+		} else {
+			return getValueAt(getDomain().getMin());
+		}
+	}
 	
 }

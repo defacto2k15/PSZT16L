@@ -1,7 +1,7 @@
 package Model.FuzzySets;
 
 public enum ServiceQualityLinguisticValues implements ILinguisticValue{
-	slaba("Słąba"), przecietna("Przeciętna"), dobra("Dobra"), bardzo_dobra("Bardzo dobra");
+	slaba("Słaba"), przecietna("Przeciętna"), dobra("Dobra"), bardzo_dobra("Bardzo dobra");
 
 	private String name;
 	
