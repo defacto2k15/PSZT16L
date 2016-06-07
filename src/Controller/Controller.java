@@ -2,21 +2,23 @@ package Controller;
 
 import com.sun.glass.ui.View;
 
+import Model.LinguisticAttributes;
 import View.IView;
 import View.ViewStateInfo;
 
 public class Controller {
 	ViewStateInfo stateInfo;
 	IView view;
+	private boolean shouldUpdateView = false;
 	
 	public void generationSlider1Change(int val) {
 		stateInfo.getActiveDistribution().setValue1(val);
-		view.update();
+		updateView();
 	}
 
 	public void generationSlider2Change(int val) {
 		stateInfo.getActiveDistribution().setValue2(val);
-		view.update();
+		updateView();
 	}
 
 	public void setStateInfo(ViewStateInfo stateInfo) {
@@ -29,6 +31,21 @@ public class Controller {
 
 	public void generatorComboBoxChanged(int selectedIndex) {
 		stateInfo.setActiveDistribution(selectedIndex);
-		view.update();
+		updateView();
+	}
+	
+	public void attributeValueSliderChanged( LinguisticAttributes attribute, int newValue){
+		stateInfo.setLinguisticAttributeCrispValue(attribute, newValue);
+	}
+	
+	
+	public void setShouldUpdateView(boolean shouldUpdateView) {
+		this.shouldUpdateView = shouldUpdateView;
+	}
+
+	private void updateView(){
+		if( shouldUpdateView  ){
+			view.update();
+		}
 	}
 }
