@@ -4,10 +4,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import Model.LinguisticAttributes;
+import Model.Model;
 import Model.CrispValues.CrispValuesDatabase;
 import Model.FuzzySets.InputFuzzySet;
+import Model.Rules.Rule;
 
 public class ViewStateInfo {
 	
@@ -15,13 +18,15 @@ public class ViewStateInfo {
 	int activeDistributionIndex = 0;
 	Map< LinguisticAttributes, Integer> linguisticAttributesValues = new HashMap<>();
 	private FuzzySetsValuesTableModel fuzzySetsValuesTableModel;
+	private RulesTableModel rulesTableModel;
 
-	public ViewStateInfo(CrispValuesDatabase crispValuesDatabase){
+	public ViewStateInfo( Model model){
 		distributionSettingProperties = Arrays.asList(
 				DistributionSettingProperties.getGaussDistributionSettings(),
 				DistributionSettingProperties.getUniformDistributionSettings()
 				);
-		fuzzySetsValuesTableModel = new FuzzySetsValuesTableModel(crispValuesDatabase);
+		fuzzySetsValuesTableModel = new FuzzySetsValuesTableModel(model.getCrispValuesDatabase());
+		rulesTableModel = new RulesTableModel(model.getRules(), model.getCrispValuesDatabase());
 	}
 	
 	public List<DistributionSettingProperties> getDistributionSettingProperties(){
@@ -57,6 +62,13 @@ public class ViewStateInfo {
 	}
 	
 	public void setInputFuzzySets( List<InputFuzzySet> sets ){
-		fuzzySetsValuesTableModel.setFuzzySets(sets);
+		List<InputFuzzySet> newSets = sets.stream()
+				.filter( p -> p.getLinguisticAttribute() != LinguisticAttributes.Tip)
+				.collect(Collectors.toList());
+		fuzzySetsValuesTableModel.setFuzzySets(newSets);
+	}
+	
+	public RulesTableModel getRulesTableModel(){
+		return rulesTableModel;
 	}
 }

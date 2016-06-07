@@ -23,7 +23,12 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JTable;
+
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+import javax.swing.JRadioButton;
 
 public class MainWindow implements IView{
 
@@ -40,6 +45,12 @@ public class MainWindow implements IView{
 	private JTextField ServiceQualityValue;
 	private JTextField FoodQualityValue;
 	private JTable fuzzySetsValuesTable;
+	private JPanel panel;
+	private JTable rulesTable;
+	private JPanel panel_2;
+	private JPanel panel_3;
+	private JLabel lblDefuzyfikator;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -50,7 +61,7 @@ public class MainWindow implements IView{
 				try {
 					Model model = new Model();
 					model.setCrispInputs(new CrispValue(0.44f), new CrispValue(0.44f), new CrispValue(0.11f));
-					ViewStateInfo stateInfo = new ViewStateInfo(model.getCrispValuesDatabase());
+					ViewStateInfo stateInfo = new ViewStateInfo(model);
 					stateInfo.setInputFuzzySets(model.getInputFuzzySets());
 					Controller controller = new Controller(model);
 					MainWindow window = new MainWindow(stateInfo, controller);
@@ -75,7 +86,7 @@ public class MainWindow implements IView{
 	private void initialize(ViewStateInfo viewStateInfo, Controller controller) {
 		this.viewStateInfo = viewStateInfo;
 		frame = new JFrame();
-		frame.setBounds(100, 100, 831, 801);
+		frame.setBounds(100, 100, 831, 741);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -214,12 +225,74 @@ public class MainWindow implements IView{
 		FoodQualityLabel.setBounds(12, 303, 206, 15);
 		frame.getContentPane().add(FoodQualityLabel);
 		
+		panel_2 = new JPanel();
+		panel_2.setBorder(new TitledBorder(null, "Wartości atrybutów", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.setBounds(5, 333, 310, 241);
+		frame.getContentPane().add(panel_2);
+		panel_2.setLayout(null);
+		
+		panel = new JPanel();
+		panel.setBounds(7, 17, 300, 217);
+		panel_2.add(panel);
+		panel.setLayout(new BorderLayout());
+		
 		fuzzySetsValuesTable = new JTable();
-		fuzzySetsValuesTable.setPreferredSize(new Dimension(40, 400));
-		fuzzySetsValuesTable.setBounds(0, 300, 20, -12);
-		frame.getContentPane().add(fuzzySetsValuesTable);
+		panel.add(fuzzySetsValuesTable, BorderLayout.CENTER);
+		panel.add(fuzzySetsValuesTable.getTableHeader(), BorderLayout.NORTH);
 		fuzzySetsValuesTable.setModel( viewStateInfo.getFuzzySetsValuesTableModel());
-		fuzzySetsValuesTable.setBounds(10, 350, 300, 300);
+		
+		panel_3 = new JPanel();
+		panel_3.setBorder(new TitledBorder(null, "Wyniki działania reguł", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_3.setBounds(7, 575, 803, 126);
+		frame.getContentPane().add(panel_3);
+		panel_3.setLayout(null);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(5, 17, 793, 104);
+		panel_3.add(panel_1);
+		panel_1.setLayout(new BorderLayout());
+		
+		rulesTable = new JTable();
+		panel_1.add(rulesTable, BorderLayout.CENTER);
+		rulesTable.setModel(viewStateInfo.getRulesTableModel());
+		
+		lblDefuzyfikator = new JLabel("Defuzyfikator");
+		lblDefuzyfikator.setFont(new Font("Dialog", Font.BOLD, 18));
+		lblDefuzyfikator.setBounds(333, 347, 150, 55);
+		frame.getContentPane().add(lblDefuzyfikator);
+		
+		JRadioButton method1Rdbt = new JRadioButton("Metoda pierwszego maksimum");
+		method1Rdbt.setBounds(323, 400, 251, 23);
+		frame.getContentPane().add(method1Rdbt);
+		
+		JRadioButton method2Rdbt = new JRadioButton("Metoda ostatniego maksimum");
+		method2Rdbt.setBounds(323, 425, 251, 23);
+		frame.getContentPane().add(method2Rdbt);
+		
+		JRadioButton method3Rdbt = new JRadioButton("Metoda środka maksimum");
+		method3Rdbt.setBounds(323, 450, 251, 23);
+		frame.getContentPane().add(method3Rdbt);
+		
+		JRadioButton method4Rdbt = new JRadioButton("Metoda środka ciężkości");
+		method4Rdbt.setBounds(323, 475, 251, 23);
+		frame.getContentPane().add(method4Rdbt);
+		
+		JLabel lblWartoWyjciowa = new JLabel("Wartość wyjściowa");
+		lblWartoWyjciowa.setFont(new Font("Dialog", Font.BOLD, 19));
+		lblWartoWyjciowa.setBounds(588, 380, 229, 69);
+		frame.getContentPane().add(lblWartoWyjciowa);
+		
+		JLabel lblNapiwekWynosi = new JLabel("Napiwek wynosi");
+		lblNapiwekWynosi.setBounds(588, 479, 115, 15);
+		frame.getContentPane().add(lblNapiwekWynosi);
+		
+		textField = new JTextField();
+		textField.setEditable(false);
+		textField.setFont(new Font("Dialog", Font.BOLD, 19));
+		textField.setText("17%");
+		textField.setBounds(718, 457, 60, 60);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
 		
 		controller.setShouldUpdateView(true);
 		update();
