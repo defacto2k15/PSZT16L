@@ -97,4 +97,9 @@ public class Model implements IModel{
 		return crispValuesDatabase.getValueFor(LinguisticAttributes.ServiceQuality);
 	}
 
+	@Override
+	public CrispValuesDatabase getCrispValuesDatabase() {
+		return crispValuesDatabase;
+	}
+
 }

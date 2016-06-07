@@ -10,6 +10,11 @@ import javax.swing.JTextField;
 
 import Controller.Controller;
 import Model.LinguisticAttributes;
+import Model.Model;
+import Model.CrispValues.ConstantCrispValuesProvider;
+import Model.CrispValues.CrispValue;
+import Model.CrispValues.CrispValuesDatabase;
+import Model.CrispValues.ICrispValuesProvider;
 import Model.FuzzySets.FoodQualityLinguisticValues;
 import sun.swing.JLightweightFrame;
 
@@ -17,6 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JButton;
+import javax.swing.JTable;
+import java.awt.Dimension;
 
 public class MainWindow implements IView{
 
@@ -32,6 +39,7 @@ public class MainWindow implements IView{
 	private JTextField charmValue;
 	private JTextField ServiceQualityValue;
 	private JTextField FoodQualityValue;
+	private JTable fuzzySetsValuesTable;
 
 	/**
 	 * Launch the application.
@@ -40,8 +48,11 @@ public class MainWindow implements IView{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ViewStateInfo stateInfo = new ViewStateInfo();
-					Controller controller = new Controller();
+					Model model = new Model();
+					model.setCrispInputs(new CrispValue(0.44f), new CrispValue(0.44f), new CrispValue(0.11f));
+					ViewStateInfo stateInfo = new ViewStateInfo(model.getCrispValuesDatabase());
+					stateInfo.setInputFuzzySets(model.getInputFuzzySets());
+					Controller controller = new Controller(model);
 					MainWindow window = new MainWindow(stateInfo, controller);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -64,7 +75,7 @@ public class MainWindow implements IView{
 	private void initialize(ViewStateInfo viewStateInfo, Controller controller) {
 		this.viewStateInfo = viewStateInfo;
 		frame = new JFrame();
-		frame.setBounds(100, 100, 724, 427);
+		frame.setBounds(100, 100, 831, 801);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -202,6 +213,13 @@ public class MainWindow implements IView{
 		JLabel FoodQualityLabel = new JLabel("Jakość jedzenia");
 		FoodQualityLabel.setBounds(12, 303, 206, 15);
 		frame.getContentPane().add(FoodQualityLabel);
+		
+		fuzzySetsValuesTable = new JTable();
+		fuzzySetsValuesTable.setPreferredSize(new Dimension(40, 400));
+		fuzzySetsValuesTable.setBounds(0, 300, 20, -12);
+		frame.getContentPane().add(fuzzySetsValuesTable);
+		fuzzySetsValuesTable.setModel( viewStateInfo.getFuzzySetsValuesTableModel());
+		fuzzySetsValuesTable.setBounds(10, 350, 300, 300);
 		
 		controller.setShouldUpdateView(true);
 		update();

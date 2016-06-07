@@ -3,6 +3,7 @@ package Model;
 import java.util.List;
 
 import Model.CrispValues.CrispValue;
+import Model.CrispValues.CrispValuesDatabase;
 import Model.FuzzySets.InputFuzzySet;
 import Model.FuzzySets.TipFuzzySet;
 import Model.LineralFunctions.Diagram;
@@ -21,6 +22,7 @@ public interface IModel {
 	Diagram getFuzzyficationDiagramForAttribute( LinguisticAttributes attribute );
 	
 	List<InputFuzzySet> getInputFuzzySets();
+	CrispValuesDatabase getCrispValuesDatabase();
 	
 	List<Rule> getRules();
 	
