@@ -14,6 +14,7 @@ import Model.Rules.FuzzyRuleBase;
 import Model.Rules.Rule;
 
 public class Model implements IModel{
+	
 	private MembershipFunctionsDatabase membershipFunctionsDatabase = new MembershipFunctionsDatabase();
 	private CrispValuesDatabase crispValuesDatabase = new CrispValuesDatabase();
 	private Fuzzyficator fuzzyficator = new Fuzzyficator(membershipFunctionsDatabase);
