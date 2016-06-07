@@ -2,6 +2,7 @@ package Controller;
 
 import com.sun.glass.ui.View;
 
+import Model.DefuzzyficationMethod;
 import Model.LinguisticAttributes;
 import Model.Model;
 import View.IView;
@@ -48,6 +49,14 @@ public class Controller {
 	public void setShouldUpdateView(boolean shouldUpdateView) {
 		this.shouldUpdateView = shouldUpdateView;
 	}
+	
+	public void defuzzyficationMethodButtonWasClicked(DefuzzyficationMethod method) {
+		stateInfo.setCurrentDefuzzyficationMethod(method);
+		model.setDefuzzyficationMethod(method);
+		updateView();
+	}
+	
+
 
 	private void updateView(){
 		if( shouldUpdateView  ){

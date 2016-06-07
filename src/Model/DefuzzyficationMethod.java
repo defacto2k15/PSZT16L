@@ -1,6 +1,8 @@
 package Model;
 
 public enum DefuzzyficationMethod {
-	SomeMethod,
-	OtherMethod
+	FirstMaximum,
+	LastMaximum,
+	CenterOfMaximum,
+	COG
 }

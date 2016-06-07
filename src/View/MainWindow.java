@@ -1,7 +1,10 @@
 package View;
 
 import java.awt.EventQueue;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.JFrame;
 import javax.swing.JComboBox;
@@ -9,6 +12,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 
 import Controller.Controller;
+import Model.DefuzzyficationMethod;
 import Model.LinguisticAttributes;
 import Model.Model;
 import Model.CrispValues.ConstantCrispValuesProvider;
@@ -50,7 +54,9 @@ public class MainWindow implements IView{
 	private JPanel panel_2;
 	private JPanel panel_3;
 	private JLabel lblDefuzyfikator;
-	private JTextField textField;
+	private JTextField tipValueField;
+	
+	private Map<DefuzzyficationMethod, JRadioButton> defuzzyficationMethodsButtons = new HashMap<>();
 
 	/**
 	 * Launch the application.
@@ -277,6 +283,18 @@ public class MainWindow implements IView{
 		method4Rdbt.setBounds(323, 475, 251, 23);
 		frame.getContentPane().add(method4Rdbt);
 		
+		defuzzyficationMethodsButtons.put(DefuzzyficationMethod.FirstMaximum, method1Rdbt);
+		defuzzyficationMethodsButtons.put(DefuzzyficationMethod.LastMaximum, method2Rdbt);
+		defuzzyficationMethodsButtons.put(DefuzzyficationMethod.CenterOfMaximum, method3Rdbt);
+		defuzzyficationMethodsButtons.put(DefuzzyficationMethod.COG, method4Rdbt);
+		
+		for( Entry<DefuzzyficationMethod, JRadioButton> pair : defuzzyficationMethodsButtons.entrySet()){
+			pair.getValue().addActionListener((l)->{
+				controller.defuzzyficationMethodButtonWasClicked(pair.getKey());
+			});
+		}
+		
+		
 		JLabel lblWartoWyjciowa = new JLabel("Wartość wyjściowa");
 		lblWartoWyjciowa.setFont(new Font("Dialog", Font.BOLD, 19));
 		lblWartoWyjciowa.setBounds(588, 380, 229, 69);
@@ -286,13 +304,13 @@ public class MainWindow implements IView{
 		lblNapiwekWynosi.setBounds(588, 479, 115, 15);
 		frame.getContentPane().add(lblNapiwekWynosi);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setFont(new Font("Dialog", Font.BOLD, 19));
-		textField.setText("17%");
-		textField.setBounds(718, 457, 60, 60);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
+		tipValueField = new JTextField();
+		tipValueField.setEditable(false);
+		tipValueField.setFont(new Font("Dialog", Font.BOLD, 19));
+		tipValueField.setText("17%");
+		tipValueField.setBounds(718, 457, 60, 60);
+		frame.getContentPane().add(tipValueField);
+		tipValueField.setColumns(10);
 		
 		controller.setShouldUpdateView(true);
 		update();
@@ -329,5 +347,15 @@ public class MainWindow implements IView{
 		charmValue.setText(
 				new Integer( 
 						viewStateInfo.getLinguisticAttributeCrispValue(LinguisticAttributes.Charm)).toString());
+		
+		for( Entry<DefuzzyficationMethod, JRadioButton> pair : defuzzyficationMethodsButtons.entrySet()){
+			if( viewStateInfo.getCurrentDefuzzyficationMethod() == pair.getKey()){
+				pair.getValue().setSelected(true);
+			} else {
+				pair.getValue().setSelected(false);
+			}
+		}	
+		
+		tipValueField.setText(viewStateInfo.getCurrentTip()+"%");
 	}
 }

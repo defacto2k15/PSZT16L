@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import Model.DefuzzyficationMethod;
 import Model.LinguisticAttributes;
 import Model.Model;
 import Model.CrispValues.CrispValuesDatabase;
@@ -19,6 +20,8 @@ public class ViewStateInfo {
 	Map< LinguisticAttributes, Integer> linguisticAttributesValues = new HashMap<>();
 	private FuzzySetsValuesTableModel fuzzySetsValuesTableModel;
 	private RulesTableModel rulesTableModel;
+	private DefuzzyficationMethod currentDefuzzyficationMethod = DefuzzyficationMethod.FirstMaximum;
+	private int currentTip = 0;
 
 	public ViewStateInfo( Model model){
 		distributionSettingProperties = Arrays.asList(
@@ -70,5 +73,21 @@ public class ViewStateInfo {
 	
 	public RulesTableModel getRulesTableModel(){
 		return rulesTableModel;
+	}
+
+	public void setCurrentDefuzzyficationMethod(DefuzzyficationMethod method) {
+		currentDefuzzyficationMethod = method;
+	}
+	
+	public DefuzzyficationMethod getCurrentDefuzzyficationMethod(){
+		return currentDefuzzyficationMethod;
+	}
+	
+	public int getCurrentTip(){
+		return currentTip;
+	}
+	
+	public void setCurrentTip( int tip ){
+		currentTip = tip;
 	}
 }
