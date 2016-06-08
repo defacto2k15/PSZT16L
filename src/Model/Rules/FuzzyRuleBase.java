@@ -45,10 +45,10 @@ public class FuzzyRuleBase {
 					And(LinguisticAttributes.ServiceQuality).Is(ServiceQualityLinguisticValues.slaba).
 						ThanTipIs(TipLinguisticValues.Bardzo_maly));
 		
-//		addRule( 
-//				ruleIf(LinguisticAttributes.FoodQuality).Is(FoodQualityLinguisticValues.Dobra).
-//					And(LinguisticAttributes.ServiceQuality).Is(ServiceQualityLinguisticValues.przecietna).
-//						ThanTipIs(TipLinguisticValues.Duzy));
+		addRule( 
+				ruleIf(LinguisticAttributes.FoodQuality).Is(FoodQualityLinguisticValues.Dobra).
+					And(LinguisticAttributes.ServiceQuality).Is(ServiceQualityLinguisticValues.przecietna).
+						ThanTipIs(TipLinguisticValues.Duzy));
 //		addRule( 
 //				ruleIf(LinguisticAttributes.FoodQuality).Is(FoodQualityLinguisticValues.Bardzo_slaba).
 //					And(LinguisticAttributes.Charm).Is(CharmLinguisticValue.paskudny).

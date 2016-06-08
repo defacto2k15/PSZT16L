@@ -26,6 +26,9 @@ public class CenterOfGravityFinder  implements ISpecialPointFinder{
 			} else if( gravitySum + areaOfPart > halfSum){
 				float leftSideArea = halfSum - gravitySum;
 				float m = part.getDomain().getMin();
+				if( part.isLine() ){
+					return m + (leftSideArea / part.getMax());
+				}
 				return (float) ( - m + Math.sqrt(m*m + 2*part.getSlope()*leftSideArea))/part.getSlope();
 			}
 		}

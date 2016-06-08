@@ -40,13 +40,24 @@ public class Defuzzyficator {
 		for( Rule rule : fuzzyRuleBase.getAsList() ){
 			ruleOutputFunctions.add(rule.getOutputSet().getFunction());
 		}
+		ruleOutputFunctions = 
+				new ArrayList<>(
+					new HashSet<>(
+						ruleOutputFunctions.stream()
+						.filter( f -> !f.isZeroFunction()).distinct()
+						.collect(Collectors.toList())));
 		
+		if( ruleOutputFunctions.size() == 0){
+			sumFunction = new Function(new ArrayList<>(), "Zero result");
+			return new TipPercentage(5);
+		}
 		sumFunction = ruleOutputFunctions.get(0);
 		for( int i = 1; i < ruleOutputFunctions.size(); i++){
 			Function rightElem = ruleOutputFunctions.get(i);
 			Function res = interferencer.generateUnion(sumFunction, rightElem);
 			sumFunction = res;
 		}
+		sumFunction = sumFunction.removeZeroLineParts();
 		
 		List<Domain> maxDomains = findMaxDomains();
 		
@@ -68,19 +79,13 @@ public class Defuzzyficator {
 			throw new IllegalStateException("First you have to call deffuzyficate, than get diagram!");
 		}
 		
-		List<Function> notZeroFunctions = 
-				new ArrayList<>(
-					new HashSet<>(
-						ruleOutputFunctions.stream()
-						.filter( f -> !f.isZeroFunction()).distinct()
-						.collect(Collectors.toList())));
 		List<VerticalLine> verticalLinesArray = new ArrayList<>();
 		verticalLinesArray.add(new VerticalLine(bestPoint, "rezultat"));
 		verticalLinesArray.add(new VerticalLine(specialPoint,
 				defuzzyficationMethod.getSpecialPointFinder().getSpecialPointName()));
 		
 		return new Diagram(
-				notZeroFunctions,
+				ruleOutputFunctions,
 				Arrays.asList(sumFunction),
 				new ArrayList<HorizontalLine>(),
 				verticalLinesArray);

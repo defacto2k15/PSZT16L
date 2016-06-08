@@ -36,11 +36,7 @@ public class CenterOfMaximumFinder implements ISpecialPointFinder{
 		}
 		float first = maxDomains.get(0).getMin(); 
 		float last = maxDomains.get(maxDomains.size() - 1).getMax();
-//		if( firstLine.isPresent() ){
-//			return (firstLine.get().getMax() - firstLine.get().getMin() ) / 2;
-//		}
 		return  ((last + first ) / 2);
-		//return (float) (maxDomains.stream().mapToDouble( p -> p.getMin()).sum() / maxDomains.size()); 
 	}
 
 	@Override

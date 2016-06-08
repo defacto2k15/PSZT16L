@@ -125,4 +125,8 @@ public class Function {
 		
 		return new Function(offsetParts, functionName);
 	}
+
+	public Function removeZeroLineParts() {
+		return new Function( lineParts.stream().filter( p -> p.isZeroLinePart() == false).collect(Collectors.toList()), functionName);
+	}
 }
