@@ -1,5 +1,6 @@
 package Model.LineralFunctions;
 
+import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,6 +68,14 @@ public class FunctionInterferencer {
 		Optional<Float> intrestingPoint = getIntrestingPoint(part1, part2, oldIntrestingPoint.get() );
 		do{
 			Situation situationInNewPoint = getSituationInPoint(part1, part2, intrestingPoint.get());
+//			if(( situationInNewPoint == Situation.FirstBigger && situationInOldPoint == Situation.SecondBigger  )||	
+//						(situationInNewPoint == Situation.SecondBigger && situationInOldPoint == Situation.FirstBigger)){
+//				if( oldIntrestingPoint.isPresent() ){
+//					System.err.println("E445: oldp is "+oldIntrestingPoint.get()+" new is "+intrestingPoint.get());
+//				} else {
+//					System.err.println("E446");
+//				}
+//			}
 			LinePart betterPart = null;
 			if( situationInNewPoint == Situation.Equal ){
 				if( situationInOldPoint == Situation.FirstBigger ){
@@ -100,6 +109,8 @@ public class FunctionInterferencer {
 				}
 			}
 			
+			
+			
 			oldIntrestingPoint = intrestingPoint;
 			intrestingPoint = getIntrestingPoint(part1, part2, oldIntrestingPoint.get() );
 		} while( intrestingPoint.isPresent() );
@@ -112,7 +123,7 @@ public class FunctionInterferencer {
 		List<Float> possiblePointsOfIntrest = new ArrayList<Float>();
 		possiblePointsOfIntrest.addAll( Arrays.asList( part1.getDomain().getMin(), part1.getDomain().getMax(),
 				part2.getDomain().getMin(), part2.getDomain().getMax() ));
-		if( !part1.isLine() && !part2.isLine() ){
+		if( !(part1.isLine() && part2.isLine()) ){
 			float meetingPlace = ( part2.getExtent() - part1.getExtent()) / ( part1.getSlope() - part2.getSlope());
 			if( part1.getDomain().isIn(meetingPlace) && part1.getDomain().isIn(meetingPlace)){
 				possiblePointsOfIntrest.add(meetingPlace);
@@ -128,9 +139,9 @@ public class FunctionInterferencer {
 	private Situation getSituationInPoint( LinePart part1, LinePart part2, Float point ){
 		float part1Value =  part1.getValueAt(point);
 		float part2Value = part2.getValueAt(point);
-		if(part1Value > part2Value ){
+		if( (part1Value - part2Value) > 0.001f ){
 			return Situation.FirstBigger;
-		} else if (part1Value <  part2Value  ){
+		} else if ( (part2Value -  part1Value) > 0.001f  ){
 			return Situation.SecondBigger;
 		} else {
 			return Situation.Equal;

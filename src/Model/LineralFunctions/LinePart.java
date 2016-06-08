@@ -27,6 +27,9 @@ public class LinePart {
 	}
 
 	public float getValueAt(float x) {
+		if( domain.isIn(x)==false){
+			return -1;
+		}
 		return getSlope() * x + getExtent();
 	}
 

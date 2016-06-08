@@ -1,5 +1,8 @@
 package Model.CrispValues;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
+import com.sun.org.apache.bcel.internal.classfile.ConstantNameAndType;
+
 import Model.ConstantValues;
 
 public class CrispValue {
@@ -7,9 +10,11 @@ public class CrispValue {
 
 	public CrispValue(float value) throws Exception {
 		super();
-		if( value < ConstantValues.MIN_CRISP_VALUE || value > ConstantValues.MAX_CRISP_VALUE){
-			throw new Exception("Crisp value must be between 0 and 100");
-		}
+//		if( value < ConstantValues.MIN_CRISP_VALUE || value > ConstantValues.MAX_CRISP_VALUE){
+//			throw new Exception("Crisp value must be between 0 and 100");
+//		}
+		value = Math.max(value, ConstantValues.MIN_CRISP_VALUE);
+		value = Math.min(value, ConstantValues.MAX_CRISP_VALUE);
 		this.value = value;
 	}
 

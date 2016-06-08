@@ -28,7 +28,7 @@ public class MembershipFunctionsDatabase {
 	}
 	
 	private void addEqualTriangualMembershipFunctions(LinguisticAttributes attribute, ILinguisticValue[] values) throws Exception {
-		float oneOffset = attribute.getMaxCrispValue() / (values.length + 1);
+		float oneOffset = (attribute.getMaxCrispValue() - attribute.getCrispMinCrispValue()) / (values.length + 1);
 		float currentFirstPoint = attribute.getCrispMinCrispValue();
 		
 		membershipFunctions.get(attribute)

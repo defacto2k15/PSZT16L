@@ -143,7 +143,7 @@ public class Graph extends JInternalFrame  {
 			
 			
 			Diagram d = new Diagram(lineralFunctions, markedLineralFunctions, horizontalLines, verticalLines, 0, 100, 0, 1,
-					"Title", "Oś X", "Oś Y");
+					"Przykładowy wykres", "Oś X", "Oś Y");
 			Graph chart = new Graph("Graph", "OY", "OX", d);
 			chart.pack( );          
 			chart.setVisible( true ); 
