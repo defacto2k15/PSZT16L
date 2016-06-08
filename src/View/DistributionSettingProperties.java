@@ -34,7 +34,7 @@ public class DistributionSettingProperties {
 	}
 	
 	public static DistributionSettingProperties getGaussDistributionSettings(){
-		return new DistributionSettingProperties("Rozkład Faussa", "Wartość oczekiwana", "Wariancja");
+		return new DistributionSettingProperties("Rozkład Gaussa", "Wartość oczekiwana", "Wariancja");
 	}
 	
 	public static DistributionSettingProperties getUniformDistributionSettings(){

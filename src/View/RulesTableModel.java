@@ -14,9 +14,12 @@ import Model.Rules.Rule;
 public class RulesTableModel extends AbstractTableModel {
 	private List<Rule> rules;
 	private CrispValuesDatabase crispValuesDatabase;
+	int origSize;
 	
 	public RulesTableModel( List<Rule> rules, CrispValuesDatabase crispValuesDatabase ){
+		System.out.println("In ctor thet is "+rules.size());
 		this.rules = rules;
+		origSize = rules.size();
 		this.crispValuesDatabase = crispValuesDatabase;
 	}
 
@@ -25,7 +28,7 @@ public class RulesTableModel extends AbstractTableModel {
     }
 
     public int getRowCount() {
-        return rules.size();
+        return origSize; // TODO VERY UGLY HACK rules.size();
     }
 
     public String getColumnName(int col) {

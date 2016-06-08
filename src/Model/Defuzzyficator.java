@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,9 +22,12 @@ public class Defuzzyficator {
 	private FuzzyRuleBase fuzzyRuleBase;
 	private FunctionInterferencer interferencer;
 	List<Function> ruleOutputFunctions = null;
+	
+	DefuzzyficationMethod defuzzyficationMethod = DefuzzyficationMethod.FirstMaximum;
+	
 	private Function sumFunction = null;
 	private float bestPoint;
-	private Optional<Float> centroid = Optional.empty();
+	private float specialPoint = 0;
 	
 	public Defuzzyficator(FuzzyRuleBase fuzzyRuleBase, FunctionInterferencer interferencer) {
 		this.fuzzyRuleBase = fuzzyRuleBase;
@@ -31,7 +35,7 @@ public class Defuzzyficator {
 	}
 
 	public TipPercentage defuzzyficate() throws Exception {
-		List<Function> ruleOutputFunctions = new ArrayList<>();
+		ruleOutputFunctions = new ArrayList<>();
 
 		for( Rule rule : fuzzyRuleBase.getAsList() ){
 			ruleOutputFunctions.add(rule.getOutputSet().getFunction());
@@ -45,21 +49,18 @@ public class Defuzzyficator {
 		}
 		
 		List<Domain> maxDomains = findMaxDomains();
+		
 		if( maxDomains.size() == 0 ){
 			int k = 22;
 		}
 		if( maxDomains.size() == 1 && maxDomains.get(0).isPoint()){
 			bestPoint = maxDomains.get(0).getMin();
 		} else {
-			centroid = findCentroid();
-			bestPoint = findMaxPointClosestToCentroid( maxDomains);
+			specialPoint = defuzzyficationMethod.getSpecialPointFinder().findSpecialPoint(sumFunction);
+			bestPoint = findMaxPointClosestToCentroid( maxDomains, specialPoint);
 		}
 		
-		float percent = ConstantValues.MIN_TIP_PERCENT +
-						( ( ConstantValues.MAX_TIP_PERCENT - ConstantValues.MIN_TIP_PERCENT ) 
-								* ( bestPoint / LinguisticAttributes.Tip.getMaxCrispValue()));
-		int z=14;
-		return new TipPercentage(percent);
+		return new TipPercentage(bestPoint);
 	}
 
 	public Diagram getDefuzzyficationDiagram() {
@@ -67,10 +68,26 @@ public class Defuzzyficator {
 			throw new IllegalStateException("First you have to call deffuzyficate, than get diagram!");
 		}
 		
-		return new Diagram(ruleOutputFunctions,
+		List<Function> notZeroFunctions = 
+				new ArrayList<>(
+					new HashSet<>(
+						ruleOutputFunctions.stream()
+						.filter( f -> !f.isZeroFunction()).distinct()
+						.collect(Collectors.toList())));
+		List<VerticalLine> verticalLinesArray = new ArrayList<>();
+		verticalLinesArray.add(new VerticalLine(bestPoint, "rezultat"));
+		verticalLinesArray.add(new VerticalLine(specialPoint,
+				defuzzyficationMethod.getSpecialPointFinder().getSpecialPointName()));
+		
+		return new Diagram(
+				notZeroFunctions,
 				Arrays.asList(sumFunction),
 				new ArrayList<HorizontalLine>(),
-				Arrays.asList(new VerticalLine(bestPoint, "rezultat"), new VerticalLine(centroid.get(), "środek ciężkości")));
+				verticalLinesArray);
+	}
+	
+	public void setDefuzzyficationMethod( DefuzzyficationMethod method ){
+		this.defuzzyficationMethod = method;
 	}
 	
 	private List<Domain> findMaxDomains() throws Exception{
@@ -99,24 +116,19 @@ public class Defuzzyficator {
 		return outList;
 	}
 	
-
-	private Optional<Float> findCentroid() {
-		return Optional.of(2.0f); // TODO niezaimplementowane LOL
-	}
-
-	private float findMaxPointClosestToCentroid(List<Domain> maxDomains ) {
+	private float findMaxPointClosestToCentroid(List<Domain> maxDomains, float specialPoint ) {
 		// maxDomains.sort((d1, d2) -> new Float( d1.getMin()).compareTo(d2.getMin())); Not needed...
 		float currentClosest = Float.MAX_VALUE;
 		for( Domain domain : maxDomains){
 			float candidatePoint = Float.MAX_VALUE; 
-			if( domain.isIn(centroid.get() ) ){
-				return centroid.get();
-			} else if( domain.getMin() > centroid.get()){
+			if( domain.isIn(specialPoint ) ){
+				return specialPoint;
+			} else if( domain.getMin() > specialPoint){
 				candidatePoint = domain.getMin();
 			} else {
 				candidatePoint = domain.getMax();
 			}
-			if( Math.abs(candidatePoint - centroid.get()) < Math.abs(currentClosest - centroid.get()) ){
+			if( Math.abs(candidatePoint - specialPoint) < Math.abs(currentClosest - specialPoint) ){
 				currentClosest = candidatePoint;
 			}
 		}

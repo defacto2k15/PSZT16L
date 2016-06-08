@@ -19,7 +19,7 @@ public class CrispValuesDatabase {
 		if( valuesMap.isEmpty() ){
 			regenerateValues();
 		}
-		return provider.getValueForAttribute(linguisticAttribute);
+		return valuesMap.get(linguisticAttribute);//provider.getValueForAttribute(linguisticAttribute);
 	}
 
 	public void regenerateValues() {

@@ -1,6 +1,8 @@
 package Model.FuzzySets;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
+
 import Model.LineralFunctions.Function;
 
 import Model.LinguisticAttributes;
@@ -20,7 +22,6 @@ public class MembershipFunctionsDatabase {
 		addEqualTriangualMembershipFunctions(LinguisticAttributes.ServiceQuality, ServiceQualityLinguisticValues.values());
 		addEqualTriangualMembershipFunctions(LinguisticAttributes.Tip, TipLinguisticValues.values());
 	}
-	
 
 	public Function getFunctionFor( LinguisticAttributes attribute, ILinguisticValue value){
 		return membershipFunctions.get(attribute).get(value);
@@ -28,7 +29,7 @@ public class MembershipFunctionsDatabase {
 	
 	private void addEqualTriangualMembershipFunctions(LinguisticAttributes attribute, ILinguisticValue[] values) throws Exception {
 		float oneOffset = attribute.getMaxCrispValue() / (values.length + 1);
-		float currentFirstPoint = 0;
+		float currentFirstPoint = attribute.getCrispMinCrispValue();
 		
 		membershipFunctions.get(attribute)
 			.put(values[0], Function.LeftHalfTrapezoid(currentFirstPoint, oneOffset, attribute.toString()+ values[0].getName()));
@@ -40,5 +41,24 @@ public class MembershipFunctionsDatabase {
 		}
 		membershipFunctions.get(attribute)
 			.put(values[values.length-1], Function.RightHalfTrapezoid(currentFirstPoint, oneOffset, attribute.toString() + values[values.length-1].getName()));
+	}
+	
+
+	private void scaleFunctions(LinguisticAttributes tip, float scale) {
+		HashMap< ILinguisticValue, Function> newMap = new HashMap<>();	
+		
+		for( Entry<ILinguisticValue, Function> pair : membershipFunctions.get(tip).entrySet()){
+			newMap.put(pair.getKey(), pair.getValue().getScaledFunction(scale));
+		}
+		membershipFunctions.put(tip, newMap);
+	}
+	
+	private void addOffsetToFunctions(LinguisticAttributes tip, int offset) {
+		HashMap< ILinguisticValue, Function> newMap = new HashMap<>();	
+		
+		for( Entry<ILinguisticValue, Function> pair : membershipFunctions.get(tip).entrySet()){
+			newMap.put(pair.getKey(), pair.getValue().getoffsetFunction(offset));
+		}
+		membershipFunctions.put(tip, newMap);
 	}
 }

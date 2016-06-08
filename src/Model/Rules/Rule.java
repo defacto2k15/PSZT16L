@@ -2,6 +2,7 @@ package Model.Rules;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import com.sun.javafx.scene.control.behavior.OptionalBoolean;
@@ -97,11 +98,22 @@ public class Rule {
 	}
 	
 	public Diagram getDiagram(){
-		String cutoffValueDescr = null;
+			try {
+				getOutputSet();
+			} catch (Exception e) {
+				System.err.println("E89");
+				e.printStackTrace();
+			}
+		List<HorizontalLine> horizontalLines  = new ArrayList<>();
+		float val1 = leftSet.getDegree(crispValuesDatabase);
+		horizontalLines.add( new HorizontalLine(val1, leftSet.toString()+" ( "+val1+" )"));
+		float val2 = rightSet.get().getDegree(crispValuesDatabase);
+		horizontalLines.add( new HorizontalLine(val2, rightSet.toString()+" ( "+val2+" )"));
+		horizontalLines.add(new HorizontalLine(cutoffValue, cutoffDescription));
 		return new Diagram(
 				Arrays.asList(conclusion.getFunction()),
 				Arrays.asList(outputSetFunction),
-				new ArrayList<HorizontalLine>(),
-				Arrays.asList(new VerticalLine(cutoffValue, cutoffDescription)));
+				horizontalLines,
+				new ArrayList<>());
 	}
 }

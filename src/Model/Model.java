@@ -14,10 +14,10 @@ import Model.Rules.FuzzyRuleBase;
 import Model.Rules.Rule;
 
 public class Model implements IModel{
+	private FunctionInterferencer interferencer = new FunctionInterferencer();
 	private MembershipFunctionsDatabase membershipFunctionsDatabase = new MembershipFunctionsDatabase();
 	private CrispValuesDatabase crispValuesDatabase = new CrispValuesDatabase();
-	private Fuzzyficator fuzzyficator = new Fuzzyficator(membershipFunctionsDatabase);
-	private FunctionInterferencer interferencer = new FunctionInterferencer();
+	private Fuzzyficator fuzzyficator = new Fuzzyficator(membershipFunctionsDatabase, crispValuesDatabase, interferencer);
 	private FuzzyRuleBase fuzzyRuleBase = new FuzzyRuleBase(fuzzyficator, crispValuesDatabase, interferencer);
 	private Defuzzyficator defuzzyficator = new Defuzzyficator( fuzzyRuleBase, interferencer );
 	
@@ -43,7 +43,7 @@ public class Model implements IModel{
 
 	@Override
 	public void setDefuzzyficationMethod(DefuzzyficationMethod method) {
-		// TODO Doesnt work yet...
+		defuzzyficator.setDefuzzyficationMethod(method);
 	}
 
 	@Override
@@ -66,6 +66,7 @@ public class Model implements IModel{
 
 	@Override
 	public List<Rule> getRules() {
+		System.out.println("M43 FRB size "+fuzzyRuleBase.getAsList().size());
 		return fuzzyRuleBase.getAsList();
 	}
 

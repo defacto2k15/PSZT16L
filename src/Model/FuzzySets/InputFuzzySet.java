@@ -26,7 +26,6 @@ public class InputFuzzySet extends FuzzySet{
 	public float getDegree(CrispValuesDatabase crispValuesDatabase ){
 		Function getFunction = getFunction();
 		CrispValue vv = crispValuesDatabase.getValueFor(linguisticAttribute);
-		System.out.println("LOLOLP");
 		try{
 		vv.getValue();
 		} catch( Exception e){

@@ -1,7 +1,9 @@
 package Model.LineralFunctions;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Function {
 	private List<LinePart> lineParts;
@@ -63,6 +65,64 @@ public class Function {
 		lineParts.add(new LinePart(0.0f, extent, domain));
 		return new Function( lineParts,  name );
 	}
+
+	public boolean isZeroFunction() {
+		return lineParts.stream().allMatch( p -> p.isZeroLinePart());
+	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((functionName == null) ? 0 : functionName.hashCode());
+		result = prime * result + ((lineParts == null) ? 0 : lineParts.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Function other = (Function) obj;
+		if (functionName == null) {
+			if (other.functionName != null)
+				return false;
+		} else if (!functionName.equals(other.functionName))
+			return false;
+		if (lineParts == null) {
+			if (other.lineParts != null)
+				return false;
+		} else if (!lineParts.equals(other.lineParts))
+			return false;
+		return true;
+	}
+
+	public Function getScaledFunction(float scale) {
+		List<LinePart> scaledParts = lineParts.stream().map( p -> {
+			try {
+				return p.getScaled(scale);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}).collect(Collectors.toList());
+		return new Function(scaledParts, functionName);
+	}
 	
+	public Function getoffsetFunction(float offset) {
+		List<LinePart> offsetParts = lineParts.stream().map( p -> {
+			try {
+				return p.getOffsetPart(offset);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}).collect(Collectors.toList());
+		
+		return new Function(offsetParts, functionName);
+	}
 }

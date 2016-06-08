@@ -11,6 +11,7 @@ import Model.LinguisticAttributes;
 import Model.Model;
 import Model.CrispValues.CrispValuesDatabase;
 import Model.FuzzySets.InputFuzzySet;
+import Model.LineralFunctions.Diagram;
 import Model.Rules.Rule;
 
 public class ViewStateInfo {
@@ -22,6 +23,7 @@ public class ViewStateInfo {
 	private RulesTableModel rulesTableModel;
 	private DefuzzyficationMethod currentDefuzzyficationMethod = DefuzzyficationMethod.FirstMaximum;
 	private int currentTip = 0;
+	private Diagram currentDiagram;
 
 	public ViewStateInfo( Model model){
 		distributionSettingProperties = Arrays.asList(
@@ -38,6 +40,10 @@ public class ViewStateInfo {
 	
 	public DistributionSettingProperties getActiveDistribution( ){
 		return distributionSettingProperties.get(activeDistributionIndex);
+	}
+	
+	public int getActiveDistributionIndex(){
+		return activeDistributionIndex;
 	}
 
 	public void setActiveDistribution(int selectedIndex) {
@@ -89,5 +95,13 @@ public class ViewStateInfo {
 	
 	public void setCurrentTip( int tip ){
 		currentTip = tip;
+	}
+	
+	public void setCurrentDiagram( Diagram currentDiagram ){
+		this.currentDiagram = currentDiagram;
+	}
+	
+	public Diagram getCurrentDiagram( ){
+		return currentDiagram;
 	}
 }

@@ -20,11 +20,16 @@ import Model.CrispValues.CrispValue;
 import Model.CrispValues.CrispValuesDatabase;
 import Model.CrispValues.ICrispValuesProvider;
 import Model.FuzzySets.FoodQualityLinguisticValues;
+import Model.LineralFunctions.Diagram;
+import View.Graphs.Graph;
 import sun.swing.JLightweightFrame;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseListener;
+
 import javax.swing.JButton;
 import javax.swing.JTable;
 
@@ -32,6 +37,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import com.sun.glass.events.MouseEvent;
+
 import javax.swing.JRadioButton;
 
 public class MainWindow implements IView{
@@ -56,7 +66,11 @@ public class MainWindow implements IView{
 	private JLabel lblDefuzyfikator;
 	private JTextField tipValueField;
 	
+	private Map<LinguisticAttributes, JSlider> crispValuesSliders = new HashMap<>();
+	private Map<LinguisticAttributes, JTextField> crispValuesTextFields = new HashMap<>();
 	private Map<DefuzzyficationMethod, JRadioButton> defuzzyficationMethodsButtons = new HashMap<>();
+	private Controller controller;
+	private JPanel graphPanel;
 
 	/**
 	 * Launch the application.
@@ -91,8 +105,9 @@ public class MainWindow implements IView{
 	 */
 	private void initialize(ViewStateInfo viewStateInfo, Controller controller) {
 		this.viewStateInfo = viewStateInfo;
+		this.controller = controller;
 		frame = new JFrame();
-		frame.setBounds(100, 100, 831, 741);
+		frame.setBounds(10, 10, 1000, 740);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -165,9 +180,12 @@ public class MainWindow implements IView{
 		lblWartoWejciowa.setBounds(12, 177, 189, 36);
 		frame.getContentPane().add(lblWartoWejciowa);
 		
-		JButton btnNewButton = new JButton("Generuj!");
-		btnNewButton.setBounds(12, 135, 200, 36);
-		frame.getContentPane().add(btnNewButton);
+		JButton generateButton = new JButton("Generuj losowo!");
+		generateButton.setBounds(12, 135, 200, 36);
+		frame.getContentPane().add(generateButton);
+		generateButton.addActionListener((l)->{
+			controller.generateButtonClicked(generationSlider1.getValue(), generationSlider2.getValue());
+		});
 		//------------------- TERA wartości crisp
 		
 		ServiceQualityValue = new JTextField();
@@ -188,15 +206,15 @@ public class MainWindow implements IView{
 		charmValue.setEditable(false);
 		frame.getContentPane().add(charmValue);
 		
+		crispValuesTextFields.put(LinguisticAttributes.ServiceQuality, ServiceQualityValue);
+		crispValuesTextFields.put(LinguisticAttributes.FoodQuality, FoodQualityValue);
+		crispValuesTextFields.put(LinguisticAttributes.Charm, charmValue);
 		
 		
 		JSlider charmSlider = new JSlider();
 		charmSlider.setBounds(12, 230, 150, 16);
 		frame.getContentPane().add(charmSlider);
-		charmSlider.addChangeListener((l)->{
-			charmValue.setText( new Integer(charmSlider.getValue()).toString()+"%");
-			controller.attributeValueSliderChanged(LinguisticAttributes.Charm, charmSlider.getValue());
-		});
+		crispValuesSliders.put(LinguisticAttributes.Charm, charmSlider);
 		
 		JLabel lblUrokKelnerki = new JLabel("Urok kelnerki");
 		lblUrokKelnerki.setBounds(12, 213, 206, 15);
@@ -207,10 +225,7 @@ public class MainWindow implements IView{
 		JSlider serviceQualitySlider = new JSlider();
 		serviceQualitySlider.setBounds(12, 275, 150, 16);
 		frame.getContentPane().add(serviceQualitySlider);
-		serviceQualitySlider.addChangeListener((l)->{
-			ServiceQualityValue.setText( new Integer(serviceQualitySlider.getValue()).toString()+"%");
-			controller.attributeValueSliderChanged(LinguisticAttributes.ServiceQuality, serviceQualitySlider.getValue());
-		});
+		crispValuesSliders.put(LinguisticAttributes.ServiceQuality, serviceQualitySlider);
 		
 		JLabel ServiceQualityLabel = new JLabel("Jakość obsługi");
 		ServiceQualityLabel.setBounds(12, 258, 206, 15);
@@ -221,10 +236,12 @@ public class MainWindow implements IView{
 		JSlider foodQualitySlider = new JSlider();
 		foodQualitySlider.setBounds(12, 320, 150, 16);
 		frame.getContentPane().add(foodQualitySlider);
-		foodQualitySlider.addChangeListener((l)->{
-			FoodQualityValue.setText( new Integer(foodQualitySlider.getValue()).toString() + "%");
-			controller.attributeValueSliderChanged(LinguisticAttributes.FoodQuality, foodQualitySlider.getValue());
-		});
+		crispValuesSliders.put(LinguisticAttributes.FoodQuality, foodQualitySlider);
+		for( Entry<LinguisticAttributes, JSlider> pair : crispValuesSliders.entrySet()){
+			pair.getValue().addChangeListener((l)->{
+				controller.attributeValueSliderChanged(pair.getKey(), pair.getValue().getValue());
+			});
+		}
 			
 		
 		JLabel FoodQualityLabel = new JLabel("Jakość jedzenia");
@@ -246,41 +263,53 @@ public class MainWindow implements IView{
 		panel.add(fuzzySetsValuesTable, BorderLayout.CENTER);
 		panel.add(fuzzySetsValuesTable.getTableHeader(), BorderLayout.NORTH);
 		fuzzySetsValuesTable.setModel( viewStateInfo.getFuzzySetsValuesTableModel());
+		fuzzySetsValuesTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				controller.fuzzySetsValuesTableRowIsSelected(fuzzySetsValuesTable.getSelectedRow());
+			}
+		});
 		
 		panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(null, "Wyniki działania reguł", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_3.setBounds(7, 575, 803, 126);
+		panel_3.setBounds(15, 586, 803, 100);
 		frame.getContentPane().add(panel_3);
 		panel_3.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(5, 17, 793, 104);
+		panel_1.setBounds(5, 17, 793, 141);
 		panel_3.add(panel_1);
 		panel_1.setLayout(new BorderLayout());
 		
 		rulesTable = new JTable();
 		panel_1.add(rulesTable, BorderLayout.CENTER);
 		rulesTable.setModel(viewStateInfo.getRulesTableModel());
-		
+		rulesTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				controller.rulesTableRowIsSelected(rulesTable.getSelectedRow());
+			}
+		});
+				
 		lblDefuzyfikator = new JLabel("Defuzyfikator");
 		lblDefuzyfikator.setFont(new Font("Dialog", Font.BOLD, 18));
-		lblDefuzyfikator.setBounds(333, 347, 150, 55);
+		lblDefuzyfikator.setBounds(343, 437, 150, 55);
 		frame.getContentPane().add(lblDefuzyfikator);
 		
 		JRadioButton method1Rdbt = new JRadioButton("Metoda pierwszego maksimum");
-		method1Rdbt.setBounds(323, 400, 251, 23);
+		method1Rdbt.setBounds(333, 490, 251, 23);
 		frame.getContentPane().add(method1Rdbt);
 		
 		JRadioButton method2Rdbt = new JRadioButton("Metoda ostatniego maksimum");
-		method2Rdbt.setBounds(323, 425, 251, 23);
+		method2Rdbt.setBounds(333, 515, 251, 23);
 		frame.getContentPane().add(method2Rdbt);
 		
 		JRadioButton method3Rdbt = new JRadioButton("Metoda środka maksimum");
-		method3Rdbt.setBounds(323, 450, 251, 23);
+		method3Rdbt.setBounds(333, 540, 251, 23);
 		frame.getContentPane().add(method3Rdbt);
 		
 		JRadioButton method4Rdbt = new JRadioButton("Metoda środka ciężkości");
-		method4Rdbt.setBounds(323, 475, 251, 23);
+		method4Rdbt.setBounds(333, 565, 251, 23);
 		frame.getContentPane().add(method4Rdbt);
 		
 		defuzzyficationMethodsButtons.put(DefuzzyficationMethod.FirstMaximum, method1Rdbt);
@@ -297,20 +326,29 @@ public class MainWindow implements IView{
 		
 		JLabel lblWartoWyjciowa = new JLabel("Wartość wyjściowa");
 		lblWartoWyjciowa.setFont(new Font("Dialog", Font.BOLD, 19));
-		lblWartoWyjciowa.setBounds(588, 380, 229, 69);
+		lblWartoWyjciowa.setBounds(598, 437, 229, 69);
 		frame.getContentPane().add(lblWartoWyjciowa);
 		
 		JLabel lblNapiwekWynosi = new JLabel("Napiwek wynosi");
-		lblNapiwekWynosi.setBounds(588, 479, 115, 15);
+		lblNapiwekWynosi.setBounds(598, 536, 115, 15);
 		frame.getContentPane().add(lblNapiwekWynosi);
 		
 		tipValueField = new JTextField();
 		tipValueField.setEditable(false);
 		tipValueField.setFont(new Font("Dialog", Font.BOLD, 19));
 		tipValueField.setText("17%");
-		tipValueField.setBounds(718, 457, 60, 60);
+		tipValueField.setBounds(728, 514, 60, 60);
 		frame.getContentPane().add(tipValueField);
 		tipValueField.setColumns(10);
+		
+		graphPanel = new JPanel();
+		graphPanel.setBounds(310, 0, 728, 442);
+		frame.getContentPane().add(graphPanel);
+		try {
+			graphPanel.add( Graph.getNiceGraph());
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		
 		controller.setShouldUpdateView(true);
 		update();
@@ -338,16 +376,18 @@ public class MainWindow implements IView{
 			generationLabel2.setText("----");
 		}
 		
-		ServiceQualityValue.setText(
-				new Integer( 
-						viewStateInfo.getLinguisticAttributeCrispValue(LinguisticAttributes.ServiceQuality)).toString());
-		FoodQualityValue.setText(
-				new Integer( 
-						viewStateInfo.getLinguisticAttributeCrispValue(LinguisticAttributes.FoodQuality)).toString());
-		charmValue.setText(
-				new Integer( 
-						viewStateInfo.getLinguisticAttributeCrispValue(LinguisticAttributes.Charm)).toString());
+		for( Entry<LinguisticAttributes, JTextField> pair : crispValuesTextFields.entrySet()){
+			pair.getValue().setText(
+					new Integer( 
+							viewStateInfo.getLinguisticAttributeCrispValue(
+									pair.getKey())).toString()+"%");
+		}
+		for( Entry<LinguisticAttributes, JSlider> pair : crispValuesSliders.entrySet()){
+			pair.getValue().setValue(
+					new Integer( viewStateInfo.getLinguisticAttributeCrispValue(pair.getKey())));
+		}		
 		
+
 		for( Entry<DefuzzyficationMethod, JRadioButton> pair : defuzzyficationMethodsButtons.entrySet()){
 			if( viewStateInfo.getCurrentDefuzzyficationMethod() == pair.getKey()){
 				pair.getValue().setSelected(true);
@@ -357,5 +397,16 @@ public class MainWindow implements IView{
 		}	
 		
 		tipValueField.setText(viewStateInfo.getCurrentTip()+"%");
+		viewStateInfo.getFuzzySetsValuesTableModel().fireTableDataChanged();
+		viewStateInfo.getRulesTableModel().fireTableDataChanged();
+		
+		if( viewStateInfo.getCurrentDiagram() != null ){
+			graphPanel.removeAll();
+			Graph newGraph = new Graph("TIT", "OY", "OX", viewStateInfo.getCurrentDiagram());
+			graphPanel.add( newGraph);
+			newGraph.setVisible(true);
+			graphPanel.repaint();
+			graphPanel.revalidate();
+		}
 	}
 }

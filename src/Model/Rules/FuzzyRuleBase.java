@@ -45,22 +45,22 @@ public class FuzzyRuleBase {
 					And(LinguisticAttributes.ServiceQuality).Is(ServiceQualityLinguisticValues.slaba).
 						ThanTipIs(TipLinguisticValues.Bardzo_maly));
 		
-		addRule( 
-				ruleIf(LinguisticAttributes.FoodQuality).Is(FoodQualityLinguisticValues.Dobra).
-					And(LinguisticAttributes.ServiceQuality).Is(ServiceQualityLinguisticValues.przecietna).
-						ThanTipIs(TipLinguisticValues.Duzy));
-		addRule( 
-				ruleIf(LinguisticAttributes.FoodQuality).Is(FoodQualityLinguisticValues.Bardzo_slaba).
-					And(LinguisticAttributes.Charm).Is(CharmLinguisticValue.paskudny).
-						ThanTipIs(TipLinguisticValues.Bardzo_maly));
-		addRule( 
-				ruleIf(LinguisticAttributes.FoodQuality).Is(FoodQualityLinguisticValues.Dobra).
-					And(LinguisticAttributes.Charm).Is(CharmLinguisticValue.rewelacyjny).
-						ThanTipIs(TipLinguisticValues.BardzoDuzy));
-		addRule( 
-				ruleIf(LinguisticAttributes.Charm).Is(CharmLinguisticValue.zadowalajacy).
-					And(LinguisticAttributes.FoodQuality).Is(FoodQualityLinguisticValues.Srednia).
-						ThanTipIs(TipLinguisticValues.Sredni));
+//		addRule( 
+//				ruleIf(LinguisticAttributes.FoodQuality).Is(FoodQualityLinguisticValues.Dobra).
+//					And(LinguisticAttributes.ServiceQuality).Is(ServiceQualityLinguisticValues.przecietna).
+//						ThanTipIs(TipLinguisticValues.Duzy));
+//		addRule( 
+//				ruleIf(LinguisticAttributes.FoodQuality).Is(FoodQualityLinguisticValues.Bardzo_slaba).
+//					And(LinguisticAttributes.Charm).Is(CharmLinguisticValue.paskudny).
+//						ThanTipIs(TipLinguisticValues.Bardzo_maly));
+//		addRule( 
+//				ruleIf(LinguisticAttributes.FoodQuality).Is(FoodQualityLinguisticValues.Dobra).
+//					And(LinguisticAttributes.Charm).Is(CharmLinguisticValue.rewelacyjny).
+//						ThanTipIs(TipLinguisticValues.BardzoDuzy));
+//		addRule( 
+//				ruleIf(LinguisticAttributes.Charm).Is(CharmLinguisticValue.zadowalajacy).
+//					And(LinguisticAttributes.FoodQuality).Is(FoodQualityLinguisticValues.Srednia).
+//						ThanTipIs(TipLinguisticValues.Sredni));
 	}
 	
 	private void addRule(Rule rule) {
