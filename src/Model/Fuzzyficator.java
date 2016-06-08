@@ -52,7 +52,8 @@ public class Fuzzyficator {
 		List<VerticalLine> verticalLines = Arrays.asList( new VerticalLine(crispValuesDatabase.getValueFor(attribute).getValue(), "Wartość "+attribute.toString() ));
 		List<HorizontalLine> horizontalLines = new ArrayList<>();
 		
-		return new Diagram( allOuterFunctions, allInnerFunctions, horizontalLines, verticalLines);
+		return new Diagram( allOuterFunctions, allInnerFunctions, horizontalLines, verticalLines,
+				0, 100, 0, 1, "Fuzyfikacja "+attribute, "jakość w procentach", "przynależność");
 	}
 
 	public List<InputFuzzySet> getInputFuzzySets() {

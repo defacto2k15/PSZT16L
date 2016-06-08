@@ -33,8 +33,11 @@ import Model.LineralFunctions.VerticalLine;
 
 public class Graph extends JInternalFrame  {
 	
-	public Graph(String Title, String OY, String OX, Diagram Data) {
-		super(Title);
+	public Graph(String NOT_USED_1, String NOT_USED_2, String NOT_USED_3, Diagram Data) {
+		super(Data.getDiagramTitle());
+		String Title = Data.getDiagramTitle();
+		String OY = Data.getyAxisTitle();
+		String OX = Data.getxAxisTitle();
 		
 		Dimension Size = new Dimension();
 		Size.height = 400;
@@ -139,7 +142,8 @@ public class Graph extends JInternalFrame  {
 			horizontalLines.add(new HorizontalLine(5, "fsefre"));
 			
 			
-			Diagram d = new Diagram(lineralFunctions, markedLineralFunctions, horizontalLines, verticalLines);
+			Diagram d = new Diagram(lineralFunctions, markedLineralFunctions, horizontalLines, verticalLines, 0, 100, 0, 1,
+					"Title", "Oś X", "Oś Y");
 			Graph chart = new Graph("Graph", "OY", "OX", d);
 			chart.pack( );          
 			chart.setVisible( true ); 

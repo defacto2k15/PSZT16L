@@ -88,7 +88,8 @@ public class Defuzzyficator {
 				ruleOutputFunctions,
 				Arrays.asList(sumFunction),
 				new ArrayList<HorizontalLine>(),
-				verticalLinesArray);
+				verticalLinesArray,
+				0, 25, 0, 1, "Defuzyfikacja", "Procent napiwka", "Przynależność");
 	}
 	
 	public void setDefuzzyficationMethod( DefuzzyficationMethod method ){

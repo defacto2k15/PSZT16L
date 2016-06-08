@@ -46,9 +46,9 @@ public class FuzzyRuleBase {
 						ThanTipIs(TipLinguisticValues.Bardzo_maly));
 		
 		addRule( 
-				ruleIf(LinguisticAttributes.FoodQuality).Is(FoodQualityLinguisticValues.Dobra).
+				ruleIf(LinguisticAttributes.FoodQuality).Is(FoodQualityLinguisticValues.Bardzo_slaba).
 					And(LinguisticAttributes.ServiceQuality).Is(ServiceQualityLinguisticValues.przecietna).
-						ThanTipIs(TipLinguisticValues.Duzy));
+						ThanTipIs(TipLinguisticValues.Maly));
 //		addRule( 
 //				ruleIf(LinguisticAttributes.FoodQuality).Is(FoodQualityLinguisticValues.Bardzo_slaba).
 //					And(LinguisticAttributes.Charm).Is(CharmLinguisticValue.paskudny).
@@ -101,6 +101,10 @@ public class FuzzyRuleBase {
 
 		public TempUnaryRuleFirstPart And(LinguisticAttributes servicequality) {
 			return new TempUnaryRuleFirstPart(this, servicequality, Operation.AND);
+		}
+		
+		public TempUnaryRuleFirstPart Or(LinguisticAttributes servicequality) {
+			return new TempUnaryRuleFirstPart(this, servicequality, Operation.OR);
 		}
 		
 		public Rule ThanTipIs(TipLinguisticValues tipLinguisticValue) {

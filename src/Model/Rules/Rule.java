@@ -114,6 +114,7 @@ public class Rule {
 				Arrays.asList(conclusion.getFunction()),
 				Arrays.asList(outputSetFunction),
 				horizontalLines,
-				new ArrayList<>());
+				new ArrayList<>(),
+				0, 25, 0 ,1, "Diagram reguły", "Procent napiwku", "Przynależność");
 	}
 }
