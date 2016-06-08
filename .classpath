@@ -2,8 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="/home/defacto/studia/pszt/git/libs/junit4-4.12.jar"/>
 	<classpathentry kind="lib" path="/home/defacto/studia/pszt/git_NEW/libs/jcommon-1.0.23.jar" sourcepath="/root/.m2/repository/org/jfree/jcommon/1.0.23/jcommon-1.0.23-sources.jar"/>
 	<classpathentry kind="lib" path="/home/defacto/studia/pszt/git_NEW/libs/jfreechart-1.0.19.jar"/>
+=======
+	<classpathentry kind="lib" path="libs/junit4-4.12.jar"/>
+	<classpathentry kind="lib" path="C:/Users/nietup/Documents/School/PSZT16L/libs/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="C:/Users/nietup/Documents/School/PSZT16L/libs/jfreechart-1.0.19.jar"/>
+>>>>>>> origin/master
 	<classpathentry kind="output" path="bin"/>
 </classpath>
