@@ -110,7 +110,7 @@ public class FunctionInterferencer {
 			}
 			
 			
-			
+			situationInOldPoint = situationInNewPoint;
 			oldIntrestingPoint = intrestingPoint;
 			intrestingPoint = getIntrestingPoint(part1, part2, oldIntrestingPoint.get() );
 		} while( intrestingPoint.isPresent() );
