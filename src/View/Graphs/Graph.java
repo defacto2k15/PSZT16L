@@ -49,7 +49,7 @@ public class Graph extends JInternalFrame  {
 	        OY,
 	        createDataset(Data),
 	        PlotOrientation.VERTICAL,
-	        false, false, false);
+	        true, true, false);
 	         
 	    ChartPanel chartPanel = new ChartPanel(xylineChart);
 	    chartPanel.setPreferredSize(Size);
@@ -85,7 +85,7 @@ public class Graph extends JInternalFrame  {
 	    
 	    List<Function> LF = Data.getLineralFunctions();
 	    for (int i = 0; i < LF.size(); i++) {
-	    	XYSeries LFSerie = new XYSeries("Linear "+Integer.toString(i));
+	    	XYSeries LFSerie = new XYSeries(LF.get(i).getFunctionName());
 	    	for (int j = 0; j < LF.get(i).getLineParts().size(); j++) {
 	    		LinePart LP = LF.get(i).getLineParts().get(j);
 	    		float min = LP.getDomain().getMin();
@@ -98,7 +98,7 @@ public class Graph extends JInternalFrame  {
 	    
 	    List<Function> MLF = Data.getMarkedLineralFunctions();
 	    for (int i = 0; i < MLF.size(); i++) {
-	    	XYSeries LFSerie = new XYSeries("Marked Linear "+Integer.toString(i));
+	    	XYSeries LFSerie = new XYSeries(MLF.get(i).getFunctionName());
 	    	for (int j = 0; j < MLF.get(i).getLineParts().size(); j++) {
 	    		LinePart LP = MLF.get(i).getLineParts().get(j);
 	    		float min = LP.getDomain().getMin();
